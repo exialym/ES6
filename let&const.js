@@ -80,11 +80,25 @@
 // a.length = 0;    // 可执行
 // a = ["Dave"];    // 报错
 /*******************************************真正冻结对象**********************/
-var constantize = (obj) => {
-    Object.freeze(obj);
-    Object.keys(obj).forEach( (key, value) => {
-        if ( typeof obj[key] === 'object' ) {
-            constantize( obj[key] );
-        }
-    });
-};
+// var constantize = (obj) => {
+//     Object.freeze(obj);
+//     Object.keys(obj).forEach( (key, value) => {
+//         if ( typeof obj[key] === 'object' ) {
+//             constantize( obj[key] );
+//         }
+//     });
+// };
+/*******************************************ES5全局对象和全局变量**********************/
+// window.a = 1;
+// console.log(a); // 1
+//
+// a = 2;
+// console.log(window.a) // 2
+/*******************************************ES6全局对象和全局变量**********************/
+//ES6为了改变这一点，规定var，function命令声明的全局变量依然是全局对象的属性，而let，const，class命令声明的全局变量不属于全局对象的属性。
+//经测试,5.8.0版本的node,var声明的全局变量也不会变成全局对象的属性
+var a = 1;
+console.log(this.a) // 1
+
+let b = 1;
+console.log(this.b) // undefined
