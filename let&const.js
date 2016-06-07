@@ -95,10 +95,10 @@
 // a = 2;
 // console.log(window.a) // 2
 /*******************************************ES6全局对象和全局变量**********************/
-//ES6为了改变这一点，规定var，function命令声明的全局变量依然是全局对象的属性，而let，const，class命令声明的全局变量不属于全局对象的属性。
-//经测试,5.8.0版本的node,var声明的全局变量也不会变成全局对象的属性
-var a = 1;
-console.log(this.a) // 1
-
-let b = 1;
-console.log(this.b) // undefined
+// //ES6为了改变这一点，规定var，function命令声明的全局变量依然是全局对象的属性，而let，const，class命令声明的全局变量不属于全局对象的属性。
+// //经测试,5.8.0版本的node,var声明的全局变量也不会变成全局对象的属性
+// var a = 1;
+// console.log(this.a) // 1
+//
+// let b = 1;
+// console.log(this.b) // undefined
