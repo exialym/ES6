@@ -201,5 +201,6 @@ setTimeout(() => console.log('s1: ', timer.s1), 3100);
 setTimeout(() => console.log('s2in: ', timer.s2), 3100);
 setTimeout(() => console.log('s2out: ', s2), 3100);
 // s1: 3
-// s2: 0
+// s2in: 0
+// s2out: 3
 
