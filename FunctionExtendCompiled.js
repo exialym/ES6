@@ -1,4 +1,6 @@
-"use strict";
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
  * Created by exialym on 2016/6/8 0008.
@@ -92,38 +94,58 @@
 // foo1();
 
 /**********************************************rest参数*********************/
-function add() {
-  var sum = 0;
+// function add(...values) {
+//   let sum = 0;
+//   for (var val of values) {
+//     sum += val;
+//   }
+//   return sum;
+// }
+// console.log(add(2, 5, 3)); // 10
+/**********************************************扩展运算符*********************/
+// function push(array, ...items) {
+//   array.push(...items);
+//   return array
+// }
+// console.log(push([1,3],2,4,5,6,4));
 
-  for (var _len = arguments.length, values = Array(_len), _key = 0; _key < _len; _key++) {
-    values[_key] = arguments[_key];
-  }
+// function f(v, w, x, y, z) { 
+// 	console.log(v+","+w+","+x+","+y+","+z);
+// }
+// var args = [0, 1];
+// f(-1, ...args, 2, ...[3]);
 
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
+// // ES5的写法
+// Math.max.apply(null, [14, 3, 77])
+// // ES6的写法
+// Math.max(...[14, 3, 77])
 
-  try {
-    for (var _iterator = values[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var val = _step.value;
 
-      sum += val;
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
+// var arr1 = ['a', 'b'];
+// var arr2 = ['c'];
+// var arr3 = ['d', 'e'];
+// // ES6的合并数组
+// [...arr1, ...arr2, ...arr3];
 
-  return sum;
+// //与解构赋值结合使用
+// const [first, ...rest] = [1, 2, 3, 4, 5];
+// first // 1
+// rest  // [2, 3, 4, 5]
+
+// const [first, ...rest] = [];
+// first // undefined
+// rest  // []:
+
+// const [first, ...rest] = ["foo"];
+// first  // "foo"
+// rest   // []
+
+//正确返回字符串长度的函数
+function length(str) {
+  return [].concat(_toConsumableArray(str)).length;
 }
-console.log(add(2, 5, 3)); // 10
+length('x\uD83D\uDE80y'); // 3
+
+//任何Iterator接口的对象，都可以用扩展运算符转为真正的数组。
+var nodeList = document.querySelectorAll('div');
+var array = [].concat(_toConsumableArray(nodeList));
