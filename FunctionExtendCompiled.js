@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Created by exialym on 2016/6/8 0008.
  */
@@ -40,51 +42,71 @@
 // (function (a = 0, b, c) {}).length // 0
 // (function (a, b = 1, c) {}).length // 1
 /**********************************************作用域*********************/
-var x1 = 1;
-function f1(x1, y1 = x1) {
-  console.log(y1);
-}
-f1(2) // 2
+// var x1 = 1;
+// function f1(x1) {
+//   var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : x1;
 
-let x2 = 1;
-function f2(y2 = x2) {
-  let x2 = 2;
-  console.log(y2);
-}
-f2() // 1
+//   console.log(y1);
+// }
+// f1(2); // 2
 
-function f3(y3 = x3) {
-  let x3 = 2;
-  console.log(y3);
-}
-f3() // ReferenceError: x is not defined
+// var x2 = 1;
+// function f2() {
+//   var y2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x2;
+//   return function () {
+//     var x2 = 2;
+//     console.log(y2);
+//   }();
+// }
+// f2(); // 1
 
-var x4 = 1;
-function f4(x4 = x4) {
-  console.log(x4);
-}
-f4(); // ReferenceError: x is not defined
+// function f3() {
+//   var y3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x3;
+//   return function () {
+//     var x3 = 2;
+//     console.log(y3);
+//   }();
+// }
+// f3(); // ReferenceError: x is not defined
 
-let foo = 'outer';
-function bar(func = x => foo) {
-  let foo = 'inner';
-  console.log(func()); // outer
-}
-bar();
+// var x4 = 1;
+// function f4() {
+//   var x4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x4;
 
-var x = 1;
-function foo(x, y = function() { x = 2; }) {
-  x = 3;
-  y();
-  console.log(x);
-}
-foo() // 2
+//   console.log(x4);
+// }
+// f4(); // ReferenceError: x is not defined
+
+// var foo = 'outer';
+// function bar() {
+//   var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (x) {
+//     return foo;
+//   };
+
+//   var foo = 'inner';
+//   console.log(func()); // outer
+// }
+// bar();
+
+// var x = 1;
+// function foo(x) {
+//   var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
+//     x = 2;
+//   };
+
+//   x = 3;
+//   y();
+//   console.log(x);
+// }
+// foo(); // 2
 
 
 function throwIfMissing() {
   throw new Error('Missing parameter');
 }
-function foo1(mustBeProvided = throwIfMissing()) {
+function foo1() {
+  var mustBeProvided = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : throwIfMissing();
+
   return mustBeProvided;
 }
 foo1();
