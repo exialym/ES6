@@ -1,6 +1,4 @@
-'use strict';
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+"use strict";
 
 /**
  * Created by exialym on 2016/6/8 0008.
@@ -140,12 +138,21 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 // first  // "foo"
 // rest   // []
 
-//正确返回字符串长度的函数
-function length(str) {
-  return [].concat(_toConsumableArray(str)).length;
-}
-length('x\uD83D\uDE80y'); // 3
+// //正确返回字符串长度的函数
+// function length(str) {
+//   return [...str].length;
+// }
+// length('x\uD83D\uDE80y') // 3
 
-//任何Iterator接口的对象，都可以用扩展运算符转为真正的数组。
-var nodeList = document.querySelectorAll('div');
-var array = [].concat(_toConsumableArray(nodeList));
+// //任何Iterator接口的对象，都可以用扩展运算符转为真正的数组。
+// var nodeList = document.querySelectorAll('div');
+// var array = [...nodeList];
+
+
+/**********************************************name*********************/
+
+function foo() {};
+foo.bind({}).name // "bound foo"
+(function () {}).bind({}).name; // "bound "
+var func1 = function func1() {};
+func1.name; // ""

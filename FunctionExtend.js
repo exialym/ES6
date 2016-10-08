@@ -136,12 +136,21 @@
 // first  // "foo"
 // rest   // []
 
-//正确返回字符串长度的函数
-function length(str) {
-  return [...str].length;
-}
-length('x\uD83D\uDE80y') // 3
+// //正确返回字符串长度的函数
+// function length(str) {
+//   return [...str].length;
+// }
+// length('x\uD83D\uDE80y') // 3
 
-//任何Iterator接口的对象，都可以用扩展运算符转为真正的数组。
-var nodeList = document.querySelectorAll('div');
-var array = [...nodeList];
+// //任何Iterator接口的对象，都可以用扩展运算符转为真正的数组。
+// var nodeList = document.querySelectorAll('div');
+// var array = [...nodeList];
+
+
+/**********************************************name*********************/
+
+function foo() {};
+foo.bind({}).name // "bound foo"
+(function(){}).bind({}).name // "bound "
+var func1 = function () {};
+func1.name // "func1"
