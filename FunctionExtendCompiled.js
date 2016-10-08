@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Created by exialym on 2016/6/8 0008.
@@ -43,70 +43,87 @@
 // (function (a, b = 1, c) {}).length // 1
 /**********************************************作用域*********************/
 // var x1 = 1;
-// function f1(x1) {
-//   var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : x1;
-
+// function f1(x1, y1 = x1) {
 //   console.log(y1);
 // }
-// f1(2); // 2
+// f1(2) // 2
 
-// var x2 = 1;
-// function f2() {
-//   var y2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x2;
-//   return function () {
-//     var x2 = 2;
-//     console.log(y2);
-//   }();
+// let x2 = 1;
+// function f2(y2 = x2) {
+//   let x2 = 2;
+//   console.log(y2);
 // }
-// f2(); // 1
+// f2() // 1
 
-// function f3() {
-//   var y3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x3;
-//   return function () {
-//     var x3 = 2;
-//     console.log(y3);
-//   }();
+// function f3(y3 = x3) {
+//   let x3 = 2;
+//   console.log(y3);
 // }
-// f3(); // ReferenceError: x is not defined
+// f3() // ReferenceError: x is not defined
 
 // var x4 = 1;
-// function f4() {
-//   var x4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x4;
-
+// function f4(x4 = x4) {
 //   console.log(x4);
 // }
 // f4(); // ReferenceError: x is not defined
 
-// var foo = 'outer';
-// function bar() {
-//   var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (x) {
-//     return foo;
-//   };
-
-//   var foo = 'inner';
+// let foo = 'outer';
+// function bar(func = x => foo) {
+//   let foo = 'inner';
 //   console.log(func()); // outer
 // }
 // bar();
 
 // var x = 1;
-// function foo(x) {
-//   var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
-//     x = 2;
-//   };
-
+// function foo(x, y = function() { x = 2; }) {
 //   x = 3;
 //   y();
 //   console.log(x);
 // }
-// foo(); // 2
+// foo() // 2
 
 
-function throwIfMissing() {
-  throw new Error('Missing parameter');
+// function throwIfMissing() {
+//   throw new Error('Missing parameter');
+// }
+// function foo1(mustBeProvided = throwIfMissing()) {
+//   return mustBeProvided;
+// }
+// foo1();
+
+/**********************************************rest参数*********************/
+function add() {
+  var sum = 0;
+
+  for (var _len = arguments.length, values = Array(_len), _key = 0; _key < _len; _key++) {
+    values[_key] = arguments[_key];
+  }
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = values[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var val = _step.value;
+
+      sum += val;
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return sum;
 }
-function foo1() {
-  var mustBeProvided = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : throwIfMissing();
-
-  return mustBeProvided;
-}
-foo1();
+console.log(add(2, 5, 3)); // 10
