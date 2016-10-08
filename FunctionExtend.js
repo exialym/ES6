@@ -148,9 +148,58 @@
 
 
 /**********************************************name*********************/
+// function foo() {};
+// foo.bind({}).name // "bound foo"
+// (function(){}).bind({}).name // "bound "
+// var func1 = function () {};
+// func1.name // "func1"
+/**********************************************使用箭头定义函数*********************/
+// var f1 = v => v;
+// //等同于
+// var f1 = function(v) { return v; };
 
-function foo() {};
-foo.bind({}).name // "bound foo"
-(function(){}).bind({}).name // "bound "
-var func1 = function () {};
-func1.name // "func1"
+// var f2 = () => 5;
+// // 等同于
+// var f2 = function () { return 5 };
+
+// var sum = (num1, num2) => num1 + num2;
+// // 等同于
+// var sum = function(num1, num2) { return num1 + num2; };
+
+// //由于{}代表着代码块，要直接返回对象的函数要使用({})的形式。
+// var getTempItem = id => ({ id: id, name: "Temp" });
+
+// //与变量解构同时使用
+// const full = ({ first, last }) => first + ' ' + last;
+// // 等同于
+// function full(person) {
+//   return person.first + ' ' + person.last;
+// }
+
+// //比较巧妙的写法
+// const numbers = (...nums) => nums;
+// numbers(1, 2, 3, 4, 5)
+// // [1,2,3,4,5]
+// const headAndTail = (head, ...tail) => [head, tail];
+// headAndTail(1, 2, 3, 4, 5)
+// // [1,[2,3,4,5]]
+
+var s2 = 0;
+function Timer() {
+  this.s1 = 0;
+  this.s2 = 0;
+  // 箭头函数
+  setInterval(() => this.s1++, 1000);
+  // 普通函数
+  setInterval(function () {
+    this.s2++;
+  }, 1000);
+}
+var timer = new Timer();
+
+setTimeout(() => console.log('s1: ', timer.s1), 3100);
+setTimeout(() => console.log('s2in: ', timer.s2), 3100);
+setTimeout(() => console.log('s2out: ', s2), 3100);
+// s1: 3
+// s2: 0
+
