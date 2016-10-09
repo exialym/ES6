@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /*************************************属性的简洁表示法*******************/
 
@@ -62,9 +62,46 @@
 // console.log(Object.assign(source, target));
 // // { a: { b: 'hello' } }
 /*************************************属性的可枚举性********************/
-var obj2 = {
-	a: 23,
-	b: true,
-	c: 'aa'
-};
-console.log(Object.keys(obj2));
+// let obj2 = {
+// 	a:23,
+// 	b:true,
+// 	c:'aa'
+// }
+// console.log(Object.keys(obj2));
+
+/*************************************__proto__********************/
+// // es6的写法
+// var obj = {
+//   method: function() {}
+// };
+// obj.__proto__ = someOtherObj;
+// //or
+// Object.getPrototypeOf({ __proto__: null })
+// // null
+
+// // es5的写法
+// var obj = Object.create(someOtherObj);
+// obj.method = function() {};
+/*************************************Object.setPrototypeOf********************/
+var proto = {};
+var obj = { x: 10 };
+Object.setPrototypeOf(obj, proto);
+
+proto.y = 20;
+proto.z = 40;
+
+obj.x; // 10
+obj.y; // 20
+obj.z; // 40
+
+/*************************************Object.getPrototypeOf********************/
+function Rectangle() {}
+
+var rec = new Rectangle();
+
+Object.getPrototypeOf(rec) === Rectangle.prototype;
+// true
+
+Object.setPrototypeOf(rec, Object.prototype);
+Object.getPrototypeOf(rec) === Rectangle.prototype;
+// false
