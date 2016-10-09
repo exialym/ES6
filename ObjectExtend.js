@@ -42,20 +42,27 @@
 // obj1.hello() // hi
 
 /*************************************Object.is()*******************/
-+0 === -0 //true
-NaN === NaN // false
+// +0 === -0 //true
+// NaN === NaN // false
 
-Object.is(+0, -0) // false
-Object.is(NaN, NaN) // true
+// Object.is(+0, -0) // false
+// Object.is(NaN, NaN) // true
 
 /*************************************Object.assign()*******************/
-var v1 = 'abc';
-var v2 = true;
-var v3 = 10;
+// var v1 = 'abc';
+// var v2 = true;
+// var v3 = 10;
 
-var obj = Object.assign({}, v1, v2, v3);
-console.log(obj); // { "0": "a", "1": "b", "2": "c" }
-var target = { a: 0 }
-var source = { a: { b: 'hello' } }
-console.log(Object.assign(source, target));
-// { a: { b: 'hello' } }
+// var obj = Object.assign({}, v1, v2, v3);
+// console.log(obj); // { "0": "a", "1": "b", "2": "c" }
+// var target = { a: 0 }
+// var source = { a: { b: 'hello' } }
+// console.log(Object.assign(source, target));
+// // { a: { b: 'hello' } }
+/*************************************属性的可枚举性********************/
+let obj2 = {
+	a:23,
+	b:true,
+	c:'aa'
+}
+console.log(Object.keys(obj2));
