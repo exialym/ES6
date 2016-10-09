@@ -184,6 +184,7 @@
 // headAndTail(1, 2, 3, 4, 5)
 // // [1,[2,3,4,5]]
 
+/**********************************************使用箭头函数中的this*********************/
 var s2 = 0;
 function Timer() {
   this.s1 = 0;
@@ -204,3 +205,25 @@ setTimeout(() => console.log('s2out: ', s2), 3100);
 // s2in: 0
 // s2out: 3
 
+//箭头函数没有自己的this
+function foo() {
+  return () => {
+    return () => {
+      return () => {
+        console.log('id:', this.id);
+      };
+    };
+  };
+}
+var f = foo.call({id: 1});
+var t1 = f.call({id: 2})()(); // id: 1
+var t2 = f().call({id: 3})(); // id: 1
+var t3 = f()().call({id: 4}); // id: 1
+
+//箭头函数的嵌套
+const pipeline = (...funcs) =>
+  val => funcs.reduce((a, b) => b(a), val);
+const plus1 = a => a + 1;
+const mult2 = a => a * 2;
+const addThenMult = pipeline(plus1, mult2);
+addThenMult(5)

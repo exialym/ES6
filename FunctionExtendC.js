@@ -186,6 +186,7 @@
 // headAndTail(1, 2, 3, 4, 5)
 // // [1,[2,3,4,5]]
 
+/**********************************************使用箭头函数中的this*********************/
 var s2 = 0;
 function Timer() {
   var _this = this;
@@ -213,4 +214,45 @@ setTimeout(function () {
   return console.log('s2out: ', s2);
 }, 3100);
 // s1: 3
-// s2: 0
+// s2in: 0
+// s2out: 3
+
+//箭头函数没有自己的this
+function foo() {
+  var _this2 = this;
+
+  return function () {
+    return function () {
+      return function () {
+        console.log('id:', _this2.id);
+      };
+    };
+  };
+}
+var f = foo.call({ id: 1 });
+var t1 = f.call({ id: 2 })()(); // id: 1
+var t2 = f().call({ id: 3 })(); // id: 1
+var t3 = f()().call({ id: 4 }); // id: 1
+
+
+var pipeline = function pipeline() {
+  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
+    funcs[_key] = arguments[_key];
+  }
+
+  return function (val) {
+    return funcs.reduce(function (a, b) {
+      return b(a);
+    }, val);
+  };
+};
+
+var plus1 = function plus1(a) {
+  return a + 1;
+};
+var mult2 = function mult2(a) {
+  return a * 2;
+};
+var addThenMult = pipeline(plus1, mult2);
+
+addThenMult(5);
