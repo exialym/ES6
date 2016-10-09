@@ -185,45 +185,55 @@
 // // [1,[2,3,4,5]]
 
 /**********************************************使用箭头函数中的this*********************/
-var s2 = 0;
-function Timer() {
-  this.s1 = 0;
-  this.s2 = 0;
-  // 箭头函数
-  setInterval(() => this.s1++, 1000);
-  // 普通函数
-  setInterval(function () {
-    this.s2++;
-  }, 1000);
-}
-var timer = new Timer();
+// var s2 = 0;
+// function Timer() {
+//   this.s1 = 0;
+//   this.s2 = 0;
+//   // 箭头函数
+//   setInterval(() => this.s1++, 1000);
+//   // 普通函数
+//   setInterval(function () {
+//     this.s2++;
+//   }, 1000);
+// }
+// var timer = new Timer();
 
-setTimeout(() => console.log('s1: ', timer.s1), 3100);
-setTimeout(() => console.log('s2in: ', timer.s2), 3100);
-setTimeout(() => console.log('s2out: ', s2), 3100);
-// s1: 3
-// s2in: 0
-// s2out: 3
+// setTimeout(() => console.log('s1: ', timer.s1), 3100);
+// setTimeout(() => console.log('s2in: ', timer.s2), 3100);
+// setTimeout(() => console.log('s2out: ', s2), 3100);
+// // s1: 3
+// // s2in: 0
+// // s2out: 3
 
-//箭头函数没有自己的this
-function foo() {
-  return () => {
-    return () => {
-      return () => {
-        console.log('id:', this.id);
-      };
-    };
-  };
-}
-var f = foo.call({id: 1});
-var t1 = f.call({id: 2})()(); // id: 1
-var t2 = f().call({id: 3})(); // id: 1
-var t3 = f()().call({id: 4}); // id: 1
+// //箭头函数没有自己的this
+// function foo() {
+//   return () => {
+//     return () => {
+//       return () => {
+//         console.log('id:', this.id);
+//       };
+//     };
+//   };
+// }
+// var f = foo.call({id: 1});
+// var t1 = f.call({id: 2})()(); // id: 1
+// var t2 = f().call({id: 3})(); // id: 1
+// var t3 = f()().call({id: 4}); // id: 1
 
-//箭头函数的嵌套
-const pipeline = (...funcs) =>
-  val => funcs.reduce((a, b) => b(a), val);
-const plus1 = a => a + 1;
-const mult2 = a => a * 2;
-const addThenMult = pipeline(plus1, mult2);
-addThenMult(5)
+// //箭头函数的嵌套
+// const pipeline = (...funcs) =>
+//   val => funcs.reduce((a, b) => b(a), val);
+// const plus1 = a => a + 1;
+// const mult2 = a => a * 2;
+// const addThenMult = pipeline(plus1, mult2);
+// addThenMult(5)
+
+/**********************************************函数的绑定*********************/
+// var obj = {
+// 	id:'100'
+// }
+// var showID = function() {
+// 	console.log(this.id);
+// }
+// var a = obj::showID;
+// a();//100
