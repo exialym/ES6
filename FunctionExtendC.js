@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Created by exialym on 2016/6/8 0008.
@@ -187,72 +187,93 @@
 // // [1,[2,3,4,5]]
 
 /**********************************************使用箭头函数中的this*********************/
-var s2 = 0;
-function Timer() {
-  var _this = this;
+// var s2 = 0;
+// function Timer() {
+//   this.s1 = 0;
+//   this.s2 = 0;
+//   // 箭头函数
+//   setInterval(() => this.s1++, 1000);
+//   // 普通函数
+//   setInterval(function () {
+//     this.s2++;
+//   }, 1000);
+// }
+// var timer = new Timer();
 
-  this.s1 = 0;
-  this.s2 = 0;
-  // 箭头函数
-  setInterval(function () {
-    return _this.s1++;
-  }, 1000);
-  // 普通函数
-  setInterval(function () {
-    this.s2++;
-  }, 1000);
-}
-var timer = new Timer();
+// setTimeout(() => console.log('s1: ', timer.s1), 3100);
+// setTimeout(() => console.log('s2in: ', timer.s2), 3100);
+// setTimeout(() => console.log('s2out: ', s2), 3100);
+// // s1: 3
+// // s2in: 0
+// // s2out: 3
 
-setTimeout(function () {
-  return console.log('s1: ', timer.s1);
-}, 3100);
-setTimeout(function () {
-  return console.log('s2in: ', timer.s2);
-}, 3100);
-setTimeout(function () {
-  return console.log('s2out: ', s2);
-}, 3100);
-// s1: 3
-// s2in: 0
-// s2out: 3
+// //箭头函数没有自己的this
+// function foo() {
+//   return () => {
+//     return () => {
+//       return () => {
+//         console.log('id:', this.id);
+//       };
+//     };
+//   };
+// }
+// var f = foo.call({id: 1});
+// var t1 = f.call({id: 2})()(); // id: 1
+// var t2 = f().call({id: 3})(); // id: 1
+// var t3 = f()().call({id: 4}); // id: 1
 
-//箭头函数没有自己的this
-function foo() {
-  var _this2 = this;
+// //箭头函数的嵌套
+// const pipeline = (...funcs) =>
+//   val => funcs.reduce((a, b) => b(a), val);
+// const plus1 = a => a + 1;
+// const mult2 = a => a * 2;
+// const addThenMult = pipeline(plus1, mult2);
+// addThenMult(5)
 
-  return function () {
-    return function () {
-      return function () {
-        console.log('id:', _this2.id);
-      };
-    };
+/**********************************************函数的绑定*********************/
+// var obj = {
+// 	id:'100'
+// }
+// var showID = function() {
+// 	console.log(this.id);
+// }
+// var a = obj::showID;
+// a();//100
+/**********************************************尾递归*********************/
+// function Fibonacci2 (n , ac1 = 1 , ac2 = 1) {
+//   if( n <= 1 ) {return ac2};
+
+//   return Fibonacci2 (n - 1, ac2, ac1 + ac2);
+// }
+// Fibonacci2(100) // 573147844013817200000
+// Fibonacci2(1000) // 7.0330367711422765e+208
+// Fibonacci2(10000) // Infinity
+/**********************************************尾递归优化的实现*********************/
+function tco(f) {
+  var value;
+  var active = false;
+  var accumulated = [];
+
+  return function accumulator() {
+    accumulated.push(arguments);
+    if (!active) {
+      active = true;
+      while (accumulated.length) {
+        value = f.apply(this, accumulated.shift());
+      }
+      active = false;
+      return value;
+    }
   };
 }
-var f = foo.call({ id: 1 });
-var t1 = f.call({ id: 2 })()(); // id: 1
-var t2 = f().call({ id: 3 })(); // id: 1
-var t3 = f()().call({ id: 4 }); // id: 1
 
-
-var pipeline = function pipeline() {
-  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
-    funcs[_key] = arguments[_key];
+var sum = tco(function (x, y) {
+  if (y > 0) {
+    return sum(x + 1, y - 1);
+  } else {
+    return x;
   }
+});
 
-  return function (val) {
-    return funcs.reduce(function (a, b) {
-      return b(a);
-    }, val);
-  };
-};
-
-var plus1 = function plus1(a) {
-  return a + 1;
-};
-var mult2 = function mult2(a) {
-  return a * 2;
-};
-var addThenMult = pipeline(plus1, mult2);
-
-addThenMult(5);
+console.log(sum(1, 100));
+// 100001

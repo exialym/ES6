@@ -237,3 +237,42 @@
 // }
 // var a = obj::showID;
 // a();//100
+/**********************************************尾递归*********************/
+// function Fibonacci2 (n , ac1 = 1 , ac2 = 1) {
+//   if( n <= 1 ) {return ac2};
+
+//   return Fibonacci2 (n - 1, ac2, ac1 + ac2);
+// }
+// Fibonacci2(100) // 573147844013817200000
+// Fibonacci2(1000) // 7.0330367711422765e+208
+// Fibonacci2(10000) // Infinity
+/**********************************************尾递归优化的实现*********************/
+function tco(f) {
+  var value;
+  var active = false;
+  var accumulated = [];
+
+  return function accumulator() {
+    accumulated.push(arguments);
+    if (!active) {
+      active = true;
+      while (accumulated.length) {
+        value = f.apply(this, accumulated.shift());
+      }
+      active = false;
+      return value;
+    }
+  };
+}
+
+var sum = tco(function(x, y) {
+  if (y > 0) {
+    return sum(x + 1, y - 1)
+  }
+  else {
+    return x
+  }
+});
+
+console.log(sum(1, 100000));
+// 100001
