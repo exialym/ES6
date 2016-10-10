@@ -63,6 +63,18 @@ require('babel-polyfill');
 // var source = { a: { b: 'hello' } }
 // console.log(Object.assign(source, target));
 // // { a: { b: 'hello' } }
+// const source = {
+//   set foo(value) {
+//     console.log(value);
+//   }
+// };
+// const target1 = {};
+// Object.assign(target1, source);
+// Object.getOwnPropertyDescriptor(target1, 'foo')
+// // { value: undefined,
+// //   writable: true,
+// //   enumerable: true,
+// //   configurable: true }
 /*************************************属性的可枚举性********************/
 // let obj2 = {
 // 	a:23,
@@ -130,14 +142,74 @@ require('babel-polyfill');
 // // 等同于
 // //let ab = Object.assign({}, a, b);
 /*************************************get与set********************/
-var test = {
-	_age:0,
-    get age() {
-        return this._age;
-    },
-    set age(value) {
-        if (value > 100) this._age = new Date().getFullYear() - value;else this._age = value;
+// var test = {
+//   _age:0,
+//   get age() {
+//     return this._age;
+//   },
+//   set age(value) {
+//     if (value > 100) 
+//       this._age = new Date().getFullYear() - value;
+//     else 
+//       this._age = value;
+//   }
+// };
+// test.age = 1994;
+// console.log(test.age);
+/*********************************Object.getOwnPropertyDescriptors()*********/
+// const obj = {
+//   foo: 123,
+//   get bar() { return 'abc' }
+// };
+// console.log(Object.getOwnPropertyDescriptors(obj));
+// // { foo:
+// //    { value: 123,
+// //      writable: true,
+// //      enumerable: true,
+// //      configurable: true },
+// //   bar:
+// //    { get: [Function: bar],
+// //      set: undefined,
+// //      enumerable: true,
+// //      configurable: true } }
+// //复制对象
+// const target2 = {};
+// Object.defineProperties(target2, Object.getOwnPropertyDescriptors(obj));
+// console.log(Object.getOwnPropertyDescriptor(target2, 'bar'));
+
+// //继承
+// var superClass = {name:'LYM'};
+// const child = Object.create(
+//   superClass,
+//   Object.getOwnPropertyDescriptors({
+//     age: 23,
+//   })
+// );
+// console.log(Object.getOwnPropertyDescriptors(child));
+// // { age:
+// //    { value: 23,
+// //      writable: true,
+// //      enumerable: true,
+// //      configurable: true } }
+
+//MixIn
+var mix = function mix(object) {
+  return {
+    with: function _with() {
+      for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
+        mixins[_key] = arguments[_key];
+      }
+
+      return mixins.reduce(function (c, mixin) {
+        return Object.create(c, Object.getOwnPropertyDescriptors(mixin));
+      }, object);
     }
+  };
 };
-test.age = 1994;
-console.log(test.age);
+
+// multiple mixins example
+var a = { a: 'a' };
+var b = { b: 'b' };
+var c = { c: 'c' };
+var d = mix(c).with(a, b);
+console.log(Object.getOwnPropertyDescriptors(d));

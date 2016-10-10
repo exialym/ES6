@@ -60,6 +60,18 @@ import 'babel-polyfill';
 // var source = { a: { b: 'hello' } }
 // console.log(Object.assign(source, target));
 // // { a: { b: 'hello' } }
+// const source = {
+//   set foo(value) {
+//     console.log(value);
+//   }
+// };
+// const target1 = {};
+// Object.assign(target1, source);
+// Object.getOwnPropertyDescriptor(target1, 'foo')
+// // { value: undefined,
+// //   writable: true,
+// //   enumerable: true,
+// //   configurable: true }
 /*************************************属性的可枚举性********************/
 // let obj2 = {
 // 	a:23,
@@ -127,17 +139,67 @@ import 'babel-polyfill';
 // // 等同于
 // //let ab = Object.assign({}, a, b);
 /*************************************get与set********************/
-var test = {
-  _age:0,
-  get age() {
-    return this._age;
-  },
-  set age(value) {
-    if (value > 100) 
-      this._age = new Date().getFullYear() - value;
-    else 
-      this._age = value;
-  }
-};
-test.age = 1994;
-console.log(test.age);
+// var test = {
+//   _age:0,
+//   get age() {
+//     return this._age;
+//   },
+//   set age(value) {
+//     if (value > 100) 
+//       this._age = new Date().getFullYear() - value;
+//     else 
+//       this._age = value;
+//   }
+// };
+// test.age = 1994;
+// console.log(test.age);
+/*********************************Object.getOwnPropertyDescriptors()*********/
+// const obj = {
+//   foo: 123,
+//   get bar() { return 'abc' }
+// };
+// console.log(Object.getOwnPropertyDescriptors(obj));
+// // { foo:
+// //    { value: 123,
+// //      writable: true,
+// //      enumerable: true,
+// //      configurable: true },
+// //   bar:
+// //    { get: [Function: bar],
+// //      set: undefined,
+// //      enumerable: true,
+// //      configurable: true } }
+// //复制对象
+// const target2 = {};
+// Object.defineProperties(target2, Object.getOwnPropertyDescriptors(obj));
+// console.log(Object.getOwnPropertyDescriptor(target2, 'bar'));
+
+// //继承
+// var superClass = {name:'LYM'};
+// const child = Object.create(
+//   superClass,
+//   Object.getOwnPropertyDescriptors({
+//     age: 23,
+//   })
+// );
+// console.log(Object.getOwnPropertyDescriptors(child));
+// // { age:
+// //    { value: 23,
+// //      writable: true,
+// //      enumerable: true,
+// //      configurable: true } }
+
+//MixIn
+let mix = (object) => ({
+  with: (...mixins) => mixins.reduce(
+    (c, mixin) => Object.create(
+      c, Object.getOwnPropertyDescriptors(mixin)
+    ), object)
+});
+
+// multiple mixins example
+let a = {a: 'a'};
+let b = {b: 'b'};
+let c = {c: 'c'};
+let d = mix(c).with(a, b);
+console.log(Object.getOwnPropertyDescriptors(d));
