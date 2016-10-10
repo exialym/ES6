@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 /*************************************属性的简洁表示法*******************/
 
 // var foo = 'bar';
@@ -81,26 +82,34 @@
 // var obj = Object.create(someOtherObj);
 // obj.method = function() {};
 /*************************************Object.setPrototypeOf********************/
-let proto = {};
-let obj = { x: 10 };
-Object.setPrototypeOf(obj, proto);
+// let proto = {};
+// let obj = { x: 10 };
+// Object.setPrototypeOf(obj, proto);
 
-proto.y = 20;
-proto.z = 40;
+// proto.y = 20;
+// proto.z = 40;
 
-obj.x // 10
-obj.y // 20
-obj.z // 40
+// obj.x // 10
+// obj.y // 20
+// obj.z // 40
 
 /*************************************Object.getPrototypeOf********************/
-function Rectangle() {
-}
+// function Rectangle() {
+// }
 
-var rec = new Rectangle();
+// var rec = new Rectangle();
 
-Object.getPrototypeOf(rec) === Rectangle.prototype
-// true
+// Object.getPrototypeOf(rec) === Rectangle.prototype
+// // true
 
-Object.setPrototypeOf(rec, Object.prototype);
-Object.getPrototypeOf(rec) === Rectangle.prototype
-// false
+// Object.setPrototypeOf(rec, Object.prototype);
+// Object.getPrototypeOf(rec) === Rectangle.prototype
+// // false
+
+/*************************************Object.values()，Object.entries()********************/
+console.log(Object.values({ [Symbol()]: 123, foo: 'abc', a:{b:'hahaha'}}));
+//["abc",{b:"hahaha"}]
+
+var obj = { foo: 'bar', baz: 42 };
+console.log(Object.entries(obj));
+// [ ["foo", "bar"], ["baz", 42] ]
