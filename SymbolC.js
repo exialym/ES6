@@ -13,5 +13,5 @@ s2.toString(); // "Symbol()"
 var s1 = Symbol("foo");
 var s2 = Symbol("foo");
 s1 === s2; // false
-console.log(s1); //.toString() // "Symbol(foo)"
-console.log(s2); //.toString() // "Symbol(bar)"
+console.log(s1); // "Symbol(foo)"
+console.log(s2); // "Symbol(foo)"
