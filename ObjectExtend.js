@@ -107,9 +107,37 @@ import 'babel-polyfill';
 // // false
 
 /*************************************Object.values()，Object.entries()********************/
-console.log(Object.values({ [Symbol()]: 123, foo: 'abc', a:{b:'hahaha'}}));
-//["abc",{b:"hahaha"}]
+// console.log(Object.values({ [Symbol()]: 123, foo: 'abc', a:{b:'hahaha'}}));
+// //["abc",{b:"hahaha"}]
 
-var obj = { foo: 'bar', baz: 42 };
-console.log(Object.entries(obj));
-// [ ["foo", "bar"], ["baz", 42] ]
+// var obj = { foo: 'bar', baz: 42 };
+// console.log(Object.entries(obj));
+// // [ ["foo", "bar"], ["baz", 42] ]
+
+/*************************************解构赋值********************/
+// let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+// x // 1
+// y // 2
+// z // { a: 3, b: 4 }
+/*************************************拓展运算符********************/
+// var a = {q:1,r:3};
+// var b = {c:2,v:4};
+// let ab = { ...a, ...b };
+// console.log(ab);
+// // 等同于
+// //let ab = Object.assign({}, a, b);
+/*************************************get与set********************/
+var test = {
+  _age:0,
+  get age() {
+    return this._age;
+  },
+  set age(value) {
+    if (value > 100) 
+      this._age = new Date().getFullYear() - value;
+    else 
+      this._age = value;
+  }
+};
+test.age = 1994;
+console.log(test.age);
