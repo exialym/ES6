@@ -2,6 +2,7 @@
 
 require('babel-polyfill');
 
+var _module = require('./Symbol_Module.js');
 // // 没有参数的情况
 // var s1 = Symbol();
 // var s2 = Symbol();
@@ -53,15 +54,20 @@ require('babel-polyfill');
 // console.log(Reflect.ownKeys(obj1));
 // // [Symbol(my_key), 'enum', 'nonEnum']
 
-var s1 = Symbol('foo');
-var s2 = Symbol('foo');
-var s3 = Symbol.for('foo');
-var s4 = Symbol.for('foo');
+/***********************************Symbol.for()，Symbol.keyFor()********************/
+// var s1 = Symbol('foo');
+// var s2 = Symbol('foo');
+// var s3 = Symbol.for('foo');
+// var s4 = Symbol.for('foo');
 
-console.log(s1 === s2); // false
-console.log(s1 === s3); // false
-console.log(s2 === s3); // false
-console.log(s3 === s4); // true
+// console.log(s1 === s2); // false
+// console.log(s1 === s3); // false
+// console.log(s2 === s3); // false
+// console.log(s3 === s4); // true
 
-console.log(Symbol.keyFor(s1));
-console.log(Symbol.keyFor(s3));
+// console.log(Symbol.keyFor(s1));//undefined
+// console.log(Symbol.keyFor(s3));//foo
+
+/***********************************实例：模块的 Singleton 模式********************/
+console.log(FOO_KEY);
+console.log(_module.foo);
