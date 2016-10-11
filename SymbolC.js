@@ -1,8 +1,13 @@
 'use strict';
 
-require('babel-polyfill');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _module = require('./Symbol_Module.js');
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// require('babel-polyfill');
+// var _module = require('./Symbol_Module.js');
 // // 没有参数的情况
 // var s1 = Symbol();
 // var s2 = Symbol();
@@ -69,5 +74,66 @@ var _module = require('./Symbol_Module.js');
 // console.log(Symbol.keyFor(s3));//foo
 
 /***********************************实例：模块的 Singleton 模式********************/
-console.log(FOO_KEY);
-console.log(_module.foo);
+//console.log(FOO_KEY);
+//console.log(module.foo);
+
+/***********************************Symbol.hasInstance********************/
+// class MyArray {  
+//   static [Symbol.hasInstance](instance) {
+//     return Array.isArray(instance);
+//   }
+// }
+// console.log([] instanceof MyArray); // true
+
+/***********************************Symbol.isConcatSpreadable********************/
+// let arr1 = ['c', 'd'];
+// arr1[Symbol.isConcatSpreadable] = false;
+// console.log(arr1[Symbol.isConcatSpreadable]); // undefined
+// console.log(['a', 'b'].concat(arr1, 'e')); // ['a', 'b', 'c', 'd', 'e']
+
+// let obj = {length: 2, 0: 'c', 1: 'd'};
+// console.log(obj[Symbol.isConcatSpreadable]); // undefined
+// console.log(['a', 'b'].concat(obj, 'e')); // ['a', 'b', obj, 'e']
+
+// obj[Symbol.isConcatSpreadable] = true;
+// console.log(obj[Symbol.isConcatSpreadable]); // undefined
+// console.log(['a', 'b'].concat(obj, 'e')); // ['a', 'b', 'c', 'd', 'e']
+
+var A1 = function (_Array) {
+  _inherits(A1, _Array);
+
+  function A1(args) {
+    _classCallCheck(this, A1);
+
+    var _this = _possibleConstructorReturn(this, (A1.__proto__ || Object.getPrototypeOf(A1)).call(this, args));
+
+    _this[Symbol.isConcatSpreadable] = true;
+    return _this;
+  }
+
+  return A1;
+}(Array);
+
+var A2 = function (_Array2) {
+  _inherits(A2, _Array2);
+
+  function A2(args) {
+    _classCallCheck(this, A2);
+
+    var _this2 = _possibleConstructorReturn(this, (A2.__proto__ || Object.getPrototypeOf(A2)).call(this, args));
+
+    _this2[Symbol.isConcatSpreadable] = false;
+    return _this2;
+  }
+
+  return A2;
+}(Array);
+
+var a1 = new A1();
+a1[0] = 3;
+a1[1] = 4;
+var a2 = new A2();
+a2[0] = 5;
+a2[1] = 6;
+console.log([1, 2].concat(a1).concat(a2));
+// [1, 2, 3, 4, [5, 6]]
