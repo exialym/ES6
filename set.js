@@ -41,17 +41,28 @@
 // }
 // set.forEach((value, key) => console.log("Color:"+value));
 /*************************************************集合操作******/
+// let a = new Set([1, 2, 3]);
+// let b = new Set([4, 3, 2]);
+// // 并集
+// let union = new Set([...a, ...b]);
+// // Set {1, 2, 3, 4}
 
-let a = new Set([1, 2, 3]);
-let b = new Set([4, 3, 2]);
-// 并集
-let union = new Set([...a, ...b]);
-// Set {1, 2, 3, 4}
+// // 交集
+// let intersect = new Set([...a].filter(x => b.has(x)));
+// // set {2, 3}
 
-// 交集
-let intersect = new Set([...a].filter(x => b.has(x)));
-// set {2, 3}
+// // 差集
+// let difference = new Set([...a].filter(x => !b.has(x)));
+// // Set {1}
 
-// 差集
-let difference = new Set([...a].filter(x => !b.has(x)));
-// Set {1}
+/*************************************************Weak Set******/
+var ws = new WeakSet();
+ws.add(1)
+// TypeError: Invalid value used in weak set
+ws.add(Symbol())
+// TypeError: invalid value used in weak set
+var b = [3, 4];
+var ws = new WeakSet(b);
+// Uncaught TypeError: Invalid value used in weak set(…)
+var a = [[1,2], [3,4]];
+var ws = new WeakSet(a);
