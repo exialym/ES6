@@ -332,20 +332,50 @@
 // li.next();//Tick
 // li.next();//Tock
 /**************************异步操作的同步化表达*******************************/
-function* main() {
-	//同步方式编写逻辑
-	var result = yield request("http://some.url");
-	var resp = JSON.parse(result);
-	console.log(resp.value);
-}
+// function* main() {
+// 	//同步方式编写逻辑
+// 	var result = yield request("http://some.url");
+// 	var resp = JSON.parse(result);
+// 	console.log(resp.value);
+// }
 
-function request(url) {
-	makeAjaxCall(url, function(response){
-		//数据返回后将数据作为yield的返回值传到Generator里
-		it.next(response);
-	});
+// function request(url) {
+// 	makeAjaxCall(url, function(response){
+// 		//数据返回后将数据作为yield的返回值传到Generator里
+// 		it.next(response);
+// 	});
+// }
+// //初始化
+// var it = main();
+// //发起Ajax请求
+// it.next();
+/**************************控制流管理*******************************/
+//1
+function* longRunningTask(value1) {
+  try {
+    var value2 = yield step1(value1);
+    var value3 = yield step2(value2);
+    var value4 = yield step3(value3);
+    var value5 = yield step4(value4);
+    // Do something with value4
+  } catch (e) {
+    // Handle any error from step1 through step4
+  }
 }
-//初始化
-var it = main();
-//发起Ajax请求
-it.next();
+function scheduler(task) {
+  var taskObj = task.next(task.value);
+  // 如果Generator函数未结束，就继续调用
+  if (!taskObj.done) {
+    task.value = taskObj.value
+    scheduler(task);
+  }
+}
+scheduler(longRunningTask(initialValue));
+//2
+let steps = [step1Func, step2Func, step3Func];
+function *iterateSteps(steps){
+  for (var i=0; i< steps.length; i++){
+    var step = steps[i];
+    yield step();
+  }
+}
