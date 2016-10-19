@@ -131,36 +131,76 @@ function thunkify(fn){
 /***********************************************async**************/
 // function timeout(data, ms) {
 //   return new Promise((resolve) => {
-//     setTimeout(resolve(data), ms);
-//     return "hahaha"
+//     setTimeout(function(){
+//     	resolve(data);
+//     }, ms);
 //   });
 // }
 // async function asyncPrint(value, ms) {
-//   var a = await timeout(value,ms).then(function(data) {
-//   	console.log(data);
-//   	return "hehehe"
+//   //timeout会返回一个promise对象
+//   //await会等待这个对象中的resolve方法执行
+//   //并用其参数当做自己的返回值
+//   //值得注意的是await命令后面的Promise对象
+//   //运行结果可能是rejected
+//   //所以最好把await命令放在try...catch代码块中
+//   //或者使用catch方法
+//   var a = await timeout(value,ms)
+//   .catch(function (err) {
+//     console.log(err);
 //   });
-//   console.log(a);
+//   console.log('a:'+a);
 //   return 'async over'
 // }
 // asyncPrint('hello world', 5000).then(v => console.log(v));
 // console.log('after async');
 // //after async
-// //hello world
-// //hehehe
+// //a:hello world
 // //async over
 
-async function* gen1() {
-  yield 'a';
-  yield 'b';
-  return 2;
-}
 
-async function* gen2() {
-  const result = yield* gen1();
-}
-(async function () {
-  for await (const x of gen2()) {
-    console.log(x);
-  }
-})();
+// //多个await命令后面的异步操作，如果不存在继发关系，最好让它们同时触发
+// //这样就不好，一个执行完再执行一个
+// //假设getFoo()和getBar()会返回Promise对象
+// let foo = await getFoo();
+// let bar = await getBar();
+// //可以这样
+// let [foo, bar] = await Promise.all([getFoo(), getBar()]);
+// //或者这样
+// //由于在Promise生成时里面的异步代码立刻开始执行
+// //所以前两行执行完两个异步操作就都已经开始了
+// //接下来在用await来等待这两个异步完成操作
+// let fooPromise = getFoo();
+// let barPromise = getBar();
+// let foo = await fooPromise;
+// let bar = await barPromise;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// async function* gen1() {
+//   yield 'a';
+//   yield 'b';
+//   return 2;
+// }
+
+// async function* gen2() {
+//   const result = yield* gen1();
+// }
+// (async function () {
+//   for await (const x of gen2()) {
+//     console.log(x);
+//   }
+// })();
