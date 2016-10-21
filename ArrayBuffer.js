@@ -210,3 +210,33 @@
 // // Int16Array [ 254, 252, 250 ]
 
 
+/***********************************************复合视图*************/
+var buffer = new ArrayBuffer(24);
+//字节0到字节3：1个32位无符号整数
+var idView = new Uint32Array(buffer, 0, 1);
+//字节4到字节19：16个8位整数
+var usernameView = new Uint8Array(buffer, 4, 16);
+//字节20到字节23：1个32位浮点数
+var amountDueView = new Float32Array(buffer, 20, 1);
+/***********************************************DataView*************/
+var buffer = new ArrayBuffer(24);
+var dv = new DataView(buffer);
+// 从第1个字节读取一个8位无符号整数
+var v1 = dv.getUint8(0);
+// 从第2个字节读取一个16位无符号整数
+var v2 = dv.getUint16(1);
+// 从第4个字节读取一个16位无符号整数
+var v3 = dv.getUint16(3);
+// 小端字节序
+var v4 = dv.getUint16(1, true);
+// 大端字节序
+var v5 = dv.getUint16(3, false);
+// 大端字节序
+var v6 = dv.getUint16(3);
+// 在第1个字节，以大端字节序写入值为25的32位整数
+dv.setInt32(0, 25, false);
+// 在第5个字节，以大端字节序写入值为25的32位整数
+dv.setInt32(4, 25);
+// 在第9个字节，以小端字节序写入值为2.5的32位浮点数
+dv.setFloat32(8, 2.5, true);
+
