@@ -188,9 +188,25 @@
 // a[1] = 5;
 // console.log(b);//Uint16Array { '0': 1, '1': 2, '2': 8, '3': 7 }
 
-//TypedArray.of()
-var a = Float32Array.of(0.151, -8, 3.7);
-console.log(a);
-// Float32Array [ 0.151, -8, 3.7 ]
+// //TypedArray.of()
+// var a = Float32Array.of(0.151, -8, 3.7);
+// console.log(a);
+// // Float32Array [ 0.151, -8, 3.7 ]
+
+// //TypedArray.from()
+// Uint16Array.from([0, 1, 2])// Uint16Array [ 0, 1, 2 ]
+// //这个方法还可以将一种TypedArray实例，转为另一种。
+// var ui16 = Uint16Array.from(Uint8Array.of(0, 1, 2));
+// ui16 instanceof Uint16Array // true
+// //from方法还可以接受一个函数，作为第二个参数，用来对每个元素进行遍历
+// //这里溢出了
+// Int8Array.of(127, 126, 125).map(x => 2 * x)
+// // Int8Array [ -2, -4, -6 ]
+// //这里的值并没有溢出
+// //这说明遍历不是针对原来的8位整数数组
+// //from会将第一个参数指定的TypedArray数组，拷贝到另一段内存之中
+// //处理之后再将结果转成指定的数组格式
+// Int16Array.from(Int8Array.of(127, 126, 125), x => 2 * x)
+// // Int16Array [ 254, 252, 250 ]
 
 
